@@ -1,4 +1,12 @@
-# Handshake Rust Ecosystem
+<p align="center">
+  <img src="./assets/handshake-rs-hero-v1.png" alt="handshake-rs — a luminous decentralized network rooted in the Handshake Rust emblem" width="100%">
+</p>
+
+<h1 align="center">Handshake Rust Ecosystem</h1>
+
+<p align="center">
+  <strong>Sovereign naming. Systems-grade Rust. Infrastructure without gatekeepers.</strong>
+</p>
 
 `handshake-rs` is an independent, community-led effort to build reliable Rust
 infrastructure and applications for the Handshake ecosystem.
@@ -24,3 +32,6 @@ Start with the [ecosystem coordination repository](https://github.com/handshake-
 
 > This is an independent project and does not claim to be the official
 > Handshake organization.
+
+The canonical [brand assets](./assets/README.md) are maintained with this
+profile.
