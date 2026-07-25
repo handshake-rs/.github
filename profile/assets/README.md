@@ -6,6 +6,7 @@ These raster masters are the canonical first-generation visual identity for the
 | Asset | Dimensions | Intended use |
 | --- | ---: | --- |
 | `handshake-rs-icon-v1.png` | 1254 × 1254 | Organization avatar, favicon, and compact project identity |
+| `handshake-rs-icon-github-v1.png` | 768 × 768 | GitHub avatar upload; optimized to remain below the 1 MB limit |
 | `handshake-rs-logo-v1.png` | 1983 × 793 | README mastheads, documentation, and horizontal lockups |
 | `handshake-rs-hero-v1.png` | 1774 × 887 | Organization profile, landing pages, and social headers |
 
