@@ -54,7 +54,7 @@ revision:
 - protocol numbers, canonical encodings, and the experimental registry have
   one owner in `hns-rs`;
 - opaque P2P relaying is default-on with persistent opt-out; HIP-76 requester
-  eligibility defaults to `Auto` with its own persistent opt-out; and any
+  eligibility defaults to `Auto` with its own opt-out; and any
   plaintext DNS/network output role remains a separate explicit opt-in;
 - node runtime and chain authority belong in `hns-node-rs`;
 - the node's current HIP-76 boundary transports strict correlated DNS messages
