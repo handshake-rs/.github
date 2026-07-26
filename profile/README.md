@@ -24,6 +24,8 @@ coordinates them; it is not a monorepo or an umbrella package.
 | [`hns-dane-engine`](https://github.com/handshake-rs/hns-dane-engine) | Canonical DNS wire, DNSSEC, TLSA/DANE, authenticated-resolver, browser-policy, and full-host HNS/ICANN dual-root crates. |
 | [`hns-dane-browser-mobile`](https://github.com/handshake-rs/hns-dane-browser-mobile) | Android/iOS shells consuming the shared DANE via ICANN DoH and namespace-decision crates; broader resolver/gateway consolidation remains tracked work. |
 | [`hns-dane-browser-extension`](https://github.com/handshake-rs/hns-dane-browser-extension) | Chromium extension, PAC/proxy integration, and native host consuming the same shared policy crates. |
+| [`hns-dane-crawler`](https://github.com/handshake-rs/hns-dane-crawler) | HSD-derived namespace topology, stored DNS evidence, DANE-readiness queues, static reports, and an optional live directory. Its output is observational, not browser trust authority. |
+| [`hns-dane-bootstrap-generator`](https://github.com/handshake-rs/hns-dane-bootstrap-generator) | Operator-facing web and appliance tooling that generates HNS/ICANN delegation, DNSSEC/DS, authoritative DoH, and TLSA deployment material. |
 | [`ecosystem`](https://github.com/handshake-rs/ecosystem) | Source audit, architecture, cross-project reconciliation, qualification matrix, migration records, and release evidence. No product code is combined here. |
 
 ## How the pieces fit
@@ -36,6 +38,9 @@ hns-dane-engine ──────> hns-dane-browser-mobile
         └─────────────> hns-dane-browser-extension
   DNSSEC/DANE and          platform lifecycle, UI,
   dual-root policy         proxy, and packaging
+
+hns-dane-crawler ── observed gap/handoff ──> hns-dane-bootstrap-generator
+  topology and evidence                       operator-authored DNS records
 
 ecosystem ── audits compatibility, integration, and release evidence for all
 ```
@@ -54,10 +59,14 @@ integration milestone:
   consensus authority;
 - TLSA-owner derivation, DANE via ICANN DoH, and dual-root namespace selection
   stay below browser UI code in `hns-dane-engine`; broader shared-engine
-  consolidation remains tracked work; and
+  consolidation remains tracked work;
 - browser shells do not classify a hostname from an IANA suffix list. They
   resolve the complete hostname through HNS and ICANN, retain one complete
-  connection/trust plan, and fail closed on bogus or indeterminate evidence.
+  connection/trust plan, and fail closed on bogus or indeterminate evidence;
+  and
+- crawler reports can guide an operator into the bootstrap generator, but
+  neither cached crawler data nor generated instructions can replace live
+  browser DNSSEC/DANE validation.
 
 ## Source governance and releases
 
