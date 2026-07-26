@@ -56,10 +56,11 @@ immutable `hns-rs` revisions:
 
 - protocol numbers, canonical encodings, and the experimental registry have
   one owner in `hns-rs`;
-- opaque P2P relaying is default-on with an opt-out policy; HIP-76 requester
-  eligibility defaults to `Auto` with its own opt-out; and every plaintext
-  DNS/network output role remains a separate explicit opt-in. Durable
-  persistence of those choices is still a platform/release gate;
+- in the generic node/runtime policy, opaque P2P relaying is default-on with
+  an opt-out, HIP-76 requester eligibility defaults to `Auto` with its own
+  opt-out, and every plaintext DNS/network output role remains a separate
+  explicit opt-in. Durable persistence of those choices is still a
+  platform/release gate;
 - node runtime and chain authority belong in `hns-node-rs`;
 - the node's current HIP-76 boundary transports strict correlated DNS messages
   but labels returned bytes untrusted—Brontide peer authentication does not
@@ -71,10 +72,10 @@ immutable `hns-rs` revisions:
   generation/event admission, and schema-v2 security status stay below browser
   UI code in `hns-dane-engine`; its complete Cargo graph builds from a
   standalone checkout without an adjacent `hns-rs` tree;
-- both browser products' portable Rust adapters map their existing relay
-  switch only to requester `Disabled`/`Auto`, use direct authoritative UDP/TCP
-  before authenticated authoritative DoH and any admitted relay, and
-  explicitly disable every provider/output role in their adapters;
+- both browser products intentionally start their persisted requester switch
+  false/off and require explicit user opt-in; false maps to `Disabled`, true
+  maps to direct-first `Auto`, their P2P `VERSION` service mask remains zero,
+  and every provider/output role remains disabled;
 - each portable browser adapter binds one checked nonzero runtime session to
   the active proxy generation. Shared admission/publication tests reject stale
   requests, responses, and trusted status after policy change, degradation,
