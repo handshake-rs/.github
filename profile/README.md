@@ -73,13 +73,13 @@ This ecosystem is under active construction and is **not yet release-ready as
 a whole**. Passing primitive or portable build tests does not imply full-node,
 wallet, marketplace, installed-browser, signed-device, mainnet, or production
 qualification. Current evidence and remaining blockers are tracked in the
-[`ecosystem` qualification matrix](https://github.com/handshake-rs/ecosystem/blob/main/QUALIFICATION_MATRIX.md)
+[`ecosystem` qualification matrix](https://github.com/handshake-rs/ecosystem/blob/main/integration/QUALIFICATION_MATRIX.md)
 and
-[`remaining gaps`](https://github.com/handshake-rs/ecosystem/blob/main/REMAINING_GAPS.md).
+[`remaining gaps`](https://github.com/handshake-rs/ecosystem/blob/main/integration/REMAINING_GAPS.md).
 
 Some repositories do not yet have a finalized top-level license; public source
 availability alone does not grant additional rights. Start with the
-[`ecosystem` integration state](https://github.com/handshake-rs/ecosystem/blob/main/INTEGRATION_STATE.md)
+[`ecosystem` integration state](https://github.com/handshake-rs/ecosystem/blob/main/integration/INTEGRATION_STATE.md)
 and each repository's own README and license terms.
 
 > This is an independent project and does not claim to be the official
