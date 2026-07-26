@@ -72,9 +72,10 @@ integration milestone:
 
 Canonical source and review policy live in `handshake-rs`. Release publishing
 and binary signing are separate responsibilities: Denuo Web LLC may continue
-to publish/sign the browser products and MeshMine without owning every source
-repository or receiving organization-wide owner access. Signed artifacts must
-identify the exact canonical source commit or tag.
+to publish/sign the browser products, MeshMine, and auxiliary DANE services or
+appliances without owning every source repository or receiving
+organization-wide owner access. Signed artifacts must identify the exact
+canonical source commit or tag.
 
 ## Maturity
 
