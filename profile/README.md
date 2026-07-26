@@ -22,9 +22,9 @@ coordinates them; it is not a monorepo or an umbrella package.
 | [`hns-rs`](https://github.com/handshake-rs/hns-rs) | Canonical, runtime-independent Handshake primitives: encoding, headers, transactions, covenants, scripts, wire messages, proofs, swaps, the Denuo experimental registry, and typed relay/output/requester consent policy. |
 | [`hns-node-rs`](https://github.com/handshake-rs/hns-node-rs) | Standalone Rust node runtime: chain state, authenticated storage, P2P, synchronization, mempool, mining templates, and RPC. It pins the canonical Denuo/HIP-76 types and carries a bounded live HIP-76 session; production DNS output, wallet, and market layers remain separate work. |
 | [`MeshMine`](https://github.com/handshake-rs/MeshMine) | Experimental decentralized mining overlay and operator application. It consumes the standalone node through an external authority boundary rather than defining consensus or embedding the node as its protocol authority. |
-| [`hns-dane-engine`](https://github.com/handshake-rs/hns-dane-engine) | Canonical DNS wire, DNSSEC, TLSA/DANE, authenticated-resolver, full-host HNS/ICANN dual-root, and typed direct-first transport/role-policy crates. |
-| [`hns-dane-browser-mobile`](https://github.com/handshake-rs/hns-dane-browser-mobile) | Android/iOS shells consuming the shared DANE via ICANN DoH, namespace-decision, and transport-policy contracts; broader resolver/gateway consolidation remains tracked work. |
-| [`hns-dane-browser-extension`](https://github.com/handshake-rs/hns-dane-browser-extension) | Chromium extension, PAC/proxy integration, native host, and desktop packaging consuming the same three shared policy contracts. |
+| [`hns-dane-engine`](https://github.com/handshake-rs/hns-dane-engine) | Canonical DNS wire, DNSSEC, TLSA/DANE, authenticated resolution, full-host HNS/ICANN dual-root policy, direct-first transport/role policy, browser authority lifecycle, and security observability crates. |
+| [`hns-dane-browser-mobile`](https://github.com/handshake-rs/hns-dane-browser-mobile) | Android/iOS shells consuming the engine's ICANN DANE, namespace, transport-policy, authority-runtime, and observability contracts while retaining platform lifecycle, UI, proxy, and packaging ownership. |
+| [`hns-dane-browser-extension`](https://github.com/handshake-rs/hns-dane-browser-extension) | Chromium extension, PAC/proxy integration, native host, and desktop packaging consuming the same five canonical engine contracts. |
 | [`hns-dane-crawler`](https://github.com/handshake-rs/hns-dane-crawler) | HSD-derived namespace topology, stored DNS evidence, DANE-readiness queues, static reports, and an optional live directory. Its output is observational, not browser trust authority. |
 | [`hns-dane-bootstrap-generator`](https://github.com/handshake-rs/hns-dane-bootstrap-generator) | Operator-facing web and appliance tooling that generates HNS/ICANN delegation, DNSSEC/DS, authoritative DoH, and TLSA deployment material. |
 | [`ecosystem`](https://github.com/handshake-rs/ecosystem) | Source audit, architecture, cross-project reconciliation, qualification matrix, migration records, and release evidence. No product code is combined here. |
@@ -36,7 +36,8 @@ hns-rs ─┬─ exact immutable pin ──> hns-node-rs ───────> 
         │                           runtime authority      mining application
         └─ exact immutable pin ──> hns-dane-engine
   canonical types/registry        DNSSEC/DANE, dual-root,
-                                  and transport policy
+                                  transport policy, authority
+                                  lifecycle, and observability
                                            ├──────────> hns-dane-browser-mobile
                                            └──────────> hns-dane-browser-extension
                                              platform lifecycle, UI,
@@ -55,33 +56,42 @@ immutable `hns-rs` revisions:
 
 - protocol numbers, canonical encodings, and the experimental registry have
   one owner in `hns-rs`;
-- opaque P2P relaying is default-on with persistent opt-out; HIP-76 requester
-  eligibility defaults to `Auto` with its own opt-out; and any
-  plaintext DNS/network output role remains a separate explicit opt-in;
+- opaque P2P relaying is default-on with an opt-out policy; HIP-76 requester
+  eligibility defaults to `Auto` with its own opt-out; and every plaintext
+  DNS/network output role remains a separate explicit opt-in. Durable
+  persistence of those choices is still a platform/release gate;
 - node runtime and chain authority belong in `hns-node-rs`;
 - the node's current HIP-76 boundary transports strict correlated DNS messages
   but labels returned bytes untrusted—Brontide peer authentication does not
   replace local DNSSEC, TLSA, or DANE validation;
 - MeshMine consumes a coherent external-node snapshot and never becomes
   consensus authority;
-- TLSA-owner derivation, DANE via ICANN DoH, dual-root namespace selection, and
-  typed transport admission stay below browser UI code in
-  `hns-dane-engine`; its complete Cargo graph builds from a standalone checkout
-  without an adjacent `hns-rs` tree, while broader shared-engine consolidation
-  remains tracked work;
-- both browser products map their existing relay switch only to requester
-  `Disabled`/`Auto`, use direct authoritative UDP/TCP before authenticated
-  authoritative DoH and any admitted relay, and explicitly disable every
-  provider/output role in their adapters;
+- TLSA-owner derivation, DANE via ICANN DoH, dual-root namespace selection,
+  typed transport admission, the authority state graph, runtime session and
+  generation/event admission, and schema-v2 security status stay below browser
+  UI code in `hns-dane-engine`; its complete Cargo graph builds from a
+  standalone checkout without an adjacent `hns-rs` tree;
+- both browser products' portable Rust adapters map their existing relay
+  switch only to requester `Disabled`/`Auto`, use direct authoritative UDP/TCP
+  before authenticated authoritative DoH and any admitted relay, and
+  explicitly disable every provider/output role in their adapters;
+- each portable browser adapter binds one checked nonzero runtime session to
+  the active proxy generation. Shared admission/publication tests reject stale
+  requests, responses, and trusted status after policy change, degradation,
+  revocation, or restart; the installed per-class matrix remains open;
 - browser shells do not classify a hostname from an IANA suffix list. They
   resolve the complete hostname through HNS and ICANN, retain one complete
   connection/trust plan, and fail closed on bogus or indeterminate evidence;
-- that shared decision reaches mobile and Chromium navigation, redirects,
-  subresources, Service Workers, downloads, and WebSockets through each
-  product's whole-request Rust boundary; and
+- each product's portable whole-request Rust boundary requires and tests that
+  shared decision for navigation, redirects, subresources, Service Workers,
+  downloads, and WebSockets; and
 - crawler reports can guide an operator into the bootstrap generator, but
   neither cached crawler data nor generated instructions can replace live
   browser DNSSEC/DANE validation.
+
+Platform proxy/resolver implementation consolidation and installed-browser or
+signed-device qualification remain open; portable contract adoption is not a
+claim that those release gates have passed.
 
 ## Source governance and releases
 
