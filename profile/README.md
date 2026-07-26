@@ -32,13 +32,15 @@ coordinates them; it is not a monorepo or an umbrella package.
 ## How the pieces fit
 
 ```text
-hns-rs ── exact immutable pin ──> hns-node-rs ───────> MeshMine
-  canonical types/registry        runtime authority      mining application
-
-hns-dane-engine ──────> hns-dane-browser-mobile
-        └─────────────> hns-dane-browser-extension
-  DNSSEC/DANE, dual-root,      platform lifecycle, UI,
-  and transport policy         proxy, and packaging
+hns-rs ─┬─ exact immutable pin ──> hns-node-rs ───────> MeshMine
+        │                           runtime authority      mining application
+        └─ exact immutable pin ──> hns-dane-engine
+  canonical types/registry        DNSSEC/DANE, dual-root,
+                                  and transport policy
+                                           ├──────────> hns-dane-browser-mobile
+                                           └──────────> hns-dane-browser-extension
+                                             platform lifecycle, UI,
+                                             proxy, and packaging
 
 hns-dane-crawler ── observed gap/handoff ──> hns-dane-bootstrap-generator
   topology and evidence                       operator-authored DNS records
@@ -48,8 +50,8 @@ ecosystem ── audits compatibility, integration, and release evidence for all
 
 The authority direction is intentional. The browser-to-engine and
 MeshMine-to-node boundaries are implemented at the current audited
-checkpoints, and `hns-node-rs` now consumes an exact immutable `hns-rs`
-revision:
+checkpoints, and both `hns-node-rs` and `hns-dane-engine` consume exact
+immutable `hns-rs` revisions:
 
 - protocol numbers, canonical encodings, and the experimental registry have
   one owner in `hns-rs`;
@@ -64,7 +66,9 @@ revision:
   consensus authority;
 - TLSA-owner derivation, DANE via ICANN DoH, dual-root namespace selection, and
   typed transport admission stay below browser UI code in
-  `hns-dane-engine`; broader shared-engine consolidation remains tracked work;
+  `hns-dane-engine`; its complete Cargo graph builds from a standalone checkout
+  without an adjacent `hns-rs` tree, while broader shared-engine consolidation
+  remains tracked work;
 - both browser products map their existing relay switch only to requester
   `Disabled`/`Auto`, use direct authoritative UDP/TCP before authenticated
   authoritative DoH and any admitted relay, and explicitly disable every
