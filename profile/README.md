@@ -22,9 +22,9 @@ coordinates them; it is not a monorepo or an umbrella package.
 | [`hns-rs`](https://github.com/handshake-rs/hns-rs) | Canonical, runtime-independent Handshake primitives: encoding, headers, transactions, covenants, scripts, wire messages, proofs, swaps, the Denuo experimental registry, and typed relay/output/requester consent policy. |
 | [`hns-node-rs`](https://github.com/handshake-rs/hns-node-rs) | Standalone Rust node runtime: chain state, authenticated storage, P2P, synchronization, mempool, mining templates, and RPC. It pins the canonical Denuo/HIP-76 types and carries a bounded live HIP-76 session; production DNS output, wallet, and market layers remain separate work. |
 | [`MeshMine`](https://github.com/handshake-rs/MeshMine) | Experimental decentralized mining overlay and operator application. It consumes the standalone node through an external authority boundary rather than defining consensus or embedding the node as its protocol authority. |
-| [`hns-dane-engine`](https://github.com/handshake-rs/hns-dane-engine) | Canonical DNS wire, DNSSEC, TLSA/DANE, authenticated-resolver, browser-policy, and full-host HNS/ICANN dual-root crates. |
-| [`hns-dane-browser-mobile`](https://github.com/handshake-rs/hns-dane-browser-mobile) | Android/iOS shells consuming the shared DANE via ICANN DoH and namespace-decision crates; broader resolver/gateway consolidation remains tracked work. |
-| [`hns-dane-browser-extension`](https://github.com/handshake-rs/hns-dane-browser-extension) | Chromium extension, PAC/proxy integration, and native host consuming the same shared policy crates. |
+| [`hns-dane-engine`](https://github.com/handshake-rs/hns-dane-engine) | Canonical DNS wire, DNSSEC, TLSA/DANE, authenticated-resolver, full-host HNS/ICANN dual-root, and typed direct-first transport/role-policy crates. |
+| [`hns-dane-browser-mobile`](https://github.com/handshake-rs/hns-dane-browser-mobile) | Android/iOS shells consuming the shared DANE via ICANN DoH, namespace-decision, and transport-policy contracts; broader resolver/gateway consolidation remains tracked work. |
+| [`hns-dane-browser-extension`](https://github.com/handshake-rs/hns-dane-browser-extension) | Chromium extension, PAC/proxy integration, native host, and desktop packaging consuming the same three shared policy contracts. |
 | [`hns-dane-crawler`](https://github.com/handshake-rs/hns-dane-crawler) | HSD-derived namespace topology, stored DNS evidence, DANE-readiness queues, static reports, and an optional live directory. Its output is observational, not browser trust authority. |
 | [`hns-dane-bootstrap-generator`](https://github.com/handshake-rs/hns-dane-bootstrap-generator) | Operator-facing web and appliance tooling that generates HNS/ICANN delegation, DNSSEC/DS, authoritative DoH, and TLSA deployment material. |
 | [`ecosystem`](https://github.com/handshake-rs/ecosystem) | Source audit, architecture, cross-project reconciliation, qualification matrix, migration records, and release evidence. No product code is combined here. |
@@ -37,8 +37,8 @@ hns-rs ── exact immutable pin ──> hns-node-rs ───────> Mes
 
 hns-dane-engine ──────> hns-dane-browser-mobile
         └─────────────> hns-dane-browser-extension
-  DNSSEC/DANE and          platform lifecycle, UI,
-  dual-root policy         proxy, and packaging
+  DNSSEC/DANE, dual-root,      platform lifecycle, UI,
+  and transport policy         proxy, and packaging
 
 hns-dane-crawler ── observed gap/handoff ──> hns-dane-bootstrap-generator
   topology and evidence                       operator-authored DNS records
@@ -62,9 +62,13 @@ revision:
   replace local DNSSEC, TLSA, or DANE validation;
 - MeshMine consumes a coherent external-node snapshot and never becomes
   consensus authority;
-- TLSA-owner derivation, DANE via ICANN DoH, and dual-root namespace selection
-  stay below browser UI code in `hns-dane-engine`; broader shared-engine
-  consolidation remains tracked work;
+- TLSA-owner derivation, DANE via ICANN DoH, dual-root namespace selection, and
+  typed transport admission stay below browser UI code in
+  `hns-dane-engine`; broader shared-engine consolidation remains tracked work;
+- both browser products map their existing relay switch only to requester
+  `Disabled`/`Auto`, use direct authoritative UDP/TCP before authenticated
+  authoritative DoH and any admitted relay, and explicitly disable every
+  provider/output role in their adapters;
 - browser shells do not classify a hostname from an IANA suffix list. They
   resolve the complete hostname through HNS and ICANN, retain one complete
   connection/trust plan, and fail closed on bogus or indeterminate evidence;
