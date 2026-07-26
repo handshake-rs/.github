@@ -20,7 +20,7 @@ coordinates them; it is not a monorepo or an umbrella package.
 | Repository | Responsibility |
 | --- | --- |
 | [`hns-rs`](https://github.com/handshake-rs/hns-rs) | Canonical, runtime-independent Handshake primitives: encoding, headers, transactions, covenants, scripts, wire messages, proofs, swaps, the Denuo experimental registry, and typed relay/output/requester consent policy. |
-| [`hns-node-rs`](https://github.com/handshake-rs/hns-node-rs) | Standalone Rust node runtime: chain state, authenticated storage, P2P, synchronization, mempool, mining templates, and RPC. Wallet and market layers remain planned work. |
+| [`hns-node-rs`](https://github.com/handshake-rs/hns-node-rs) | Standalone Rust node runtime: chain state, authenticated storage, P2P, synchronization, mempool, mining templates, and RPC. It pins the canonical Denuo/HIP-76 types and carries a bounded live HIP-76 session; production DNS output, wallet, and market layers remain separate work. |
 | [`MeshMine`](https://github.com/handshake-rs/MeshMine) | Experimental decentralized mining overlay and operator application. It consumes the standalone node through an external authority boundary rather than defining consensus or embedding the node as its protocol authority. |
 | [`hns-dane-engine`](https://github.com/handshake-rs/hns-dane-engine) | Canonical DNS wire, DNSSEC, TLSA/DANE, authenticated-resolver, browser-policy, and full-host HNS/ICANN dual-root crates. |
 | [`hns-dane-browser-mobile`](https://github.com/handshake-rs/hns-dane-browser-mobile) | Android/iOS shells consuming the shared DANE via ICANN DoH and namespace-decision crates; broader resolver/gateway consolidation remains tracked work. |
@@ -32,8 +32,8 @@ coordinates them; it is not a monorepo or an umbrella package.
 ## How the pieces fit
 
 ```text
-hns-rs ── next integration ──> hns-node-rs ─────────> MeshMine
-  canonical types/registry      runtime authority       mining application
+hns-rs ── exact immutable pin ──> hns-node-rs ───────> MeshMine
+  canonical types/registry        runtime authority      mining application
 
 hns-dane-engine ──────> hns-dane-browser-mobile
         └─────────────> hns-dane-browser-extension
@@ -48,14 +48,18 @@ ecosystem ── audits compatibility, integration, and release evidence for all
 
 The authority direction is intentional. The browser-to-engine and
 MeshMine-to-node boundaries are implemented at the current audited
-checkpoints; adoption of `hns-rs` by `hns-node-rs` is the next identified
-integration milestone:
+checkpoints, and `hns-node-rs` now consumes an exact immutable `hns-rs`
+revision:
 
 - protocol numbers, canonical encodings, and the experimental registry have
   one owner in `hns-rs`;
-- opaque P2P relaying is default-on with persistent opt-out, while requester
-  and output-node authority are separate explicit opt-ins;
+- opaque P2P relaying is default-on with persistent opt-out; HIP-76 requester
+  eligibility defaults to `Auto` with its own persistent opt-out; and any
+  plaintext DNS/network output role remains a separate explicit opt-in;
 - node runtime and chain authority belong in `hns-node-rs`;
+- the node's current HIP-76 boundary transports strict correlated DNS messages
+  but labels returned bytes untrusted—Brontide peer authentication does not
+  replace local DNSSEC, TLSA, or DANE validation;
 - MeshMine consumes a coherent external-node snapshot and never becomes
   consensus authority;
 - TLSA-owner derivation, DANE via ICANN DoH, and dual-root namespace selection
@@ -64,7 +68,9 @@ integration milestone:
 - browser shells do not classify a hostname from an IANA suffix list. They
   resolve the complete hostname through HNS and ICANN, retain one complete
   connection/trust plan, and fail closed on bogus or indeterminate evidence;
-  and
+- that shared decision reaches mobile and Chromium navigation, redirects,
+  subresources, Service Workers, downloads, and WebSockets through each
+  product's whole-request Rust boundary; and
 - crawler reports can guide an operator into the bootstrap generator, but
   neither cached crawler data nor generated instructions can replace live
   browser DNSSEC/DANE validation.
