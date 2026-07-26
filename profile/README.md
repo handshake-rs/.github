@@ -8,9 +8,10 @@
   <strong>Sovereign naming. Systems-grade Rust. Infrastructure without gatekeepers.</strong>
 </p>
 
-`handshake-rs` is an independent, community-led collection of Rust libraries,
-services, and applications for the Handshake ecosystem. Each product has its
-own repository, version history, qualification gates, and release boundary.
+`handshake-rs` is an independent, community-led, Rust-centered collection of
+libraries, services, and applications for the Handshake ecosystem. Each
+product has its own repository, version history, qualification gates, and
+release boundary.
 The [`ecosystem`](https://github.com/handshake-rs/ecosystem) repository
 coordinates them; it is not a monorepo or an umbrella package.
 
