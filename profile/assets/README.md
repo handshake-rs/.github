@@ -16,3 +16,7 @@ open network traffic; ultraviolet marks cryptographic state and verification.
 
 Do not overwrite these masters. Publish material revisions under a new versioned
 filename so existing documentation and releases remain reproducible.
+
+`SHA256SUMS` records the canonical bytes. Run `../../scripts/check.sh` from this
+directory (or `./scripts/check.sh` from the repository root) before publishing a
+profile or asset change.
