@@ -20,12 +20,12 @@ coordinates them; it is not a monorepo or an umbrella package.
 | Repository | Responsibility |
 | --- | --- |
 | [`hns-rs`](https://github.com/handshake-rs/hns-rs) | Canonical, runtime-independent Handshake primitives: encoding, headers, transactions, covenants, scripts, wire messages, proofs, swaps, the Denuo experimental registry, and typed relay/output/requester consent policy. |
-| [`hns-node-rs`](https://github.com/handshake-rs/hns-node-rs) | Standalone Rust node runtime: chain state, authenticated storage, P2P, synchronization, mempool, mining templates, and RPC. It pins the canonical Denuo/HIP-76 types and carries a bounded live HIP-76 session; production DNS output, wallet, and market layers remain separate work. |
-| [`MeshMine`](https://github.com/handshake-rs/MeshMine) | Experimental decentralized mining overlay and operator application. It consumes the standalone node through an external authority boundary rather than defining consensus or embedding the node as its protocol authority. |
-| [`hns-dane-engine`](https://github.com/handshake-rs/hns-dane-engine) | Canonical DNS wire, DNSSEC, TLSA/DANE, authenticated resolution, full-host HNS/ICANN dual-root policy, direct-first transport/role policy, browser authority lifecycle, and security observability crates. |
-| [`hns-dane-browser-mobile`](https://github.com/handshake-rs/hns-dane-browser-mobile) | Android/iOS shells consuming the engine's ICANN DANE, namespace, transport-policy, authority-runtime, and observability contracts while retaining platform lifecycle, UI, proxy, and packaging ownership. |
-| [`hns-dane-browser-extension`](https://github.com/handshake-rs/hns-dane-browser-extension) | Chromium extension, PAC/proxy integration, native host, and desktop packaging consuming the same five canonical engine contracts. |
-| [`hns-dane-crawler`](https://github.com/handshake-rs/hns-dane-crawler) | HSD-derived namespace topology, stored DNS evidence, DANE-readiness queues, static reports, and an optional live directory. Its output is observational, not browser trust authority. |
+| [`hns-node-rs`](https://github.com/handshake-rs/hns-node-rs) | Standalone Rust node runtime: chain state, authenticated storage, P2P, synchronization, mempool, mining templates, and RPC. Functional consensus readiness is complete; the base snapshot starts at `pre-authority`, live native RPC reports a mode-specific release stage, and mainnet authority remains conditional on the synchronized durable canary. It pins the canonical Denuo/HIP-76 types and carries a bounded live HIP-76 session; production DNS output, wallet, and market layers remain separate work. |
+| [`MeshMine`](https://github.com/handshake-rs/MeshMine) | Experimental decentralized mining overlay and operator application. It consumes exact node revision `504d3fed035feb8a637ca09c4e0816b6e1144622` through an external authority boundary rather than defining consensus or embedding the node as its protocol authority; that pin predates the standalone Denuo/HIP-76 session. |
+| [`hns-dane-engine`](https://github.com/handshake-rs/hns-dane-engine) | Canonical DNS wire, DNSSEC, TLSA/DANE, authenticated resolution, full-host HNS/ICANN dual-root policy, direct-first transport/role policy, separately consented terminal recursive-HNS-DoH recovery, browser authority lifecycle, and security observability crates. |
+| [`hns-dane-browser-mobile`](https://github.com/handshake-rs/hns-dane-browser-mobile) | Android/iOS shells consuming the engine's ICANN DANE, namespace, transport-policy, authority-runtime, and observability contracts while retaining platform lifecycle, staged header maintenance, UI, proxy, store, and packaging ownership. |
+| [`hns-dane-browser-extension`](https://github.com/handshake-rs/hns-dane-browser-extension) | Chromium extension, PAC/proxy integration, native host, staged header maintenance, and cross-platform Setup packaging consuming the same five canonical engine contracts. |
+| [`hns-dane-crawler`](https://github.com/handshake-rs/hns-dane-crawler) | HSD-derived namespace topology, stored DNS evidence, DANE-readiness queues, nameserver-handoff cohorts and preflights, static reports, and an optional live directory. Its output is observational, not browser trust authority. |
 | [`hns-dane-bootstrap-generator`](https://github.com/handshake-rs/hns-dane-bootstrap-generator) | Operator-facing web and appliance tooling that generates HNS/ICANN delegation, DNSSEC/DS, authoritative DoH, and TLSA deployment material. |
 | [`ecosystem`](https://github.com/handshake-rs/ecosystem) | Source audit, architecture, cross-project reconciliation, qualification matrix, migration records, and release evidence. No product code is combined here. |
 
@@ -62,24 +62,42 @@ immutable `hns-rs` revisions:
   explicit opt-in. Durable persistence of those choices is still a
   platform/release gate;
 - node runtime and chain authority belong in `hns-node-rs`;
+- the node's functional readiness fields are all true. Its base snapshot uses
+  `pre-authority`, while live native RPC reports `native-sync-live-p2p`,
+  `mining-engine-observe`, or `mainnet-canary-gated` according to
+  configuration; none of those diagnostic stages grants a private mining
+  capability unless the explicit canary, synchronized active state, and
+  coherent durable authoritative tip all pass;
 - the node's current HIP-76 boundary transports strict correlated DNS messages
   but labels returned bytes untrusted—Brontide peer authentication does not
   replace local DNSSEC, TLSA, or DANE validation;
 - MeshMine consumes a coherent external-node snapshot and never becomes
-  consensus authority;
+  consensus authority. Its current immutable node pin includes complete
+  functional readiness but not the later Denuo/HIP-76 session;
 - TLSA-owner derivation, DANE via ICANN DoH, dual-root namespace selection,
   typed transport admission, the authority state graph, runtime session and
   generation/event admission, and schema-v2 security status stay below browser
   UI code in `hns-dane-engine`; its complete Cargo graph builds from a
   standalone checkout without an adjacent `hns-rs` tree;
-- both browser products intentionally start their persisted requester switch
-  false/off and require explicit user opt-in; false maps to `Disabled`, true
-  maps to direct-first `Auto`, their P2P `VERSION` service mask remains zero,
-  and every provider/output role remains disabled;
+- both browser products intentionally start their persisted P2P requester
+  switch false/off and require explicit user opt-in; false maps to `Disabled`,
+  true maps to direct-first `Auto`, their P2P `VERSION` service mask remains
+  zero, and every provider/output role remains disabled;
+- recursive HNS DoH recovery is a separate setting and consent boundary in
+  each browser. Its endpoint is blank/off by default and is terminal only
+  after eligible failures exhaust direct authoritative DNS, proof-anchored
+  owner authoritative DoH, and any opted-in requester-only P2P relay. Returned
+  DNS bytes remain untrusted until local HNS proof, DNSSEC, TLSA, and DANE
+  validation succeeds;
 - each portable browser adapter binds one checked nonzero runtime session to
   the active proxy generation. Shared admission/publication tests reject stale
   requests, responses, and trusted status after policy change, degradation,
   revocation, or restart; the installed per-class matrix remains open;
+- browser header maintenance stages network work and candidate state away from
+  the live request path, revalidates its starting generation and tip, then
+  publishes headers, peers, readiness, and maintenance epoch atomically. This
+  keeps the active proxy available during staging while making older
+  navigation receipts and late publications explicitly stale;
 - browser shells do not classify a hostname from an IANA suffix list. They
   resolve the complete hostname through HNS and ICANN, retain one complete
   connection/trust plan, and fail closed on bogus or indeterminate evidence;
@@ -93,6 +111,34 @@ immutable `hns-rs` revisions:
 Platform proxy/resolver implementation consolidation and installed-browser or
 signed-device qualification remain open; portable contract adoption is not a
 claim that those release gates have passed.
+
+## Distribution checkpoints
+
+The mobile repository identifies Android as its validated shipping baseline
+and links the current
+[Google Play listing](https://play.google.com/store/apps/details?id=com.denuoweb.hnsdane)
+and
+[Apple App Store listing](https://apps.apple.com/us/app/hns-dane-browser/id6791914326).
+Both listings reported version `0.5.0` on 2026-07-28; repository main is the
+`0.5.3` update candidate. Its native iOS shell, signing/upload automation, and
+store metadata remain product-specific evidence rather than ecosystem-wide
+release qualification.
+
+The Chromium repository's latest tag is `v0.5.4`. That release line packages a
+browser-neutral Manifest V3 ZIP, six platform-matched native-host bundles, and
+six graphical HNS DANE Browser Setup applications; the Linux Setup baseline is
+glibc 2.39 or newer. Windows executables remain unsigned. The current default
+branch provides a default-branch-only manual workflow that replaces an
+existing release's macOS assets with Developer ID-signed and notarized native
+hosts and Setup apps without changing the tag or source commit. Its
+credential-bearing jobs use the protected `macos-signing` environment; the
+final write-enabled publisher uses a separate `release` environment that still
+lacks approval and branch rules. On 2026-07-28 the workflow successfully
+replaced and reverified the nine affected v0.5.4 assets; Setup applications
+carry stapled tickets and standalone native hosts use Apple's online ticket.
+Catalog signing, review, published catalog IDs, environment protection for the
+asset publisher, and installed-browser testing remain separate distribution
+gates.
 
 ## Source governance and releases
 
