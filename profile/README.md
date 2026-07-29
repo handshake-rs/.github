@@ -112,6 +112,26 @@ Platform proxy/resolver implementation consolidation and installed-browser or
 signed-device qualification remain open; portable contract adoption is not a
 claim that those release gates have passed.
 
+## Non-mobile source and package checkpoints
+
+All 14 allowlisted `hns-rs` crates are published and non-yanked at `0.1.0`.
+Every package embeds source commit
+`0ea5994c336642ea7d01c51c0e22df2008985426` in its Cargo VCS metadata.
+Documentation head
+`f6f46e1ecf9b31ca6592a6350c254a6effb9c9d0` records the complete
+publication, but no local or remote `v0.1.0` Git tag exists.
+
+The canonical `hns-dane-engine` remote remains at
+`7f7bb8fa100c2393f2cd5a64c64bf5e20a0f3ab5`. Local release preparation
+ending at `1d0fc9c6ba72f008e60d8c5a98741a32aeea4a75` is unpublished and
+intentionally unpushed. MeshMine documentation head
+`9f781a00ee8fc3b7c6773538434235a65f167ca3` passed all three jobs in CI run
+`30440116148` without changing its immutable external-node boundary.
+
+The bootstrap-generator workflow is hosted, but its current evidence is a
+failure rather than a pass: run `30401402868` stopped at `npm ci` because
+`@emnapi/runtime@1.11.3` is missing from `package-lock.json`.
+
 ## Distribution checkpoints
 
 The mobile repository identifies Android as its validated shipping baseline
@@ -124,21 +144,15 @@ Both listings reported version `0.5.0` on 2026-07-28; repository main is the
 store metadata remain product-specific evidence rather than ecosystem-wide
 release qualification.
 
-The Chromium repository's latest tag is `v0.5.4`. That release line packages a
-browser-neutral Manifest V3 ZIP, six platform-matched native-host bundles, and
-six graphical HNS DANE Browser Setup applications; the Linux Setup baseline is
-glibc 2.39 or newer. Windows executables remain unsigned. The current default
-branch provides a default-branch-only manual workflow that replaces an
-existing release's macOS assets with Developer ID-signed and notarized native
-hosts and Setup apps without changing the tag or source commit. Its
-credential-bearing jobs use the protected `macos-signing` environment; the
-final write-enabled publisher uses a separate `release` environment that still
-lacks approval and branch rules. On 2026-07-28 the workflow successfully
-replaced and reverified the nine affected v0.5.4 assets; Setup applications
-carry stapled tickets and standalone native hosts use Apple's online ticket.
-Catalog signing, review, published catalog IDs, environment protection for the
-asset publisher, and installed-browser testing remain separate distribution
-gates.
+The Chromium repository's latest tag is `v0.5.5` at source
+`86b18497285753944ec1b9196ec05ee359c6db11`. Its public release contains 29
+assets across the Manifest V3, native-host, Setup, checksum, and provenance
+surface. macOS native-host and Setup artifacts are Developer ID signed and
+Apple notarized; Setup tickets are stapled and standalone native hosts use
+Apple's online ticket. Windows artifacts remain unsigned. Documentation head
+`3495bd1c5e7c26f9486ea81fb21dc1618c9bc2c8` passed exact-head CI run
+`30439859541`. Catalog signing, review, published catalog IDs, and
+installed-browser testing remain separate distribution gates.
 
 ## Source governance and releases
 
