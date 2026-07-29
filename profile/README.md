@@ -134,15 +134,25 @@ failure rather than a pass: run `30401402868` stopped at `npm ci` because
 
 ## Distribution checkpoints
 
-The mobile repository identifies Android as its validated shipping baseline
-and links the current
+The mobile repository links the
 [Google Play listing](https://play.google.com/store/apps/details?id=com.denuoweb.hnsdane)
 and
 [Apple App Store listing](https://apps.apple.com/us/app/hns-dane-browser/id6791914326).
-Both listings reported version `0.5.0` on 2026-07-28; repository main is the
-`0.5.3` update candidate. Its native iOS shell, signing/upload automation, and
-store metadata remain product-specific evidence rather than ecosystem-wide
-release qualification.
+Android 0.5.5 version code 46 from source
+`d24f85158854abb8be4a7bb9e914aebe5e7e4679` is deployed to Google Play
+production. The last directly reconciled public Apple listing baseline remains
+0.5.0. The iOS 0.5.5 build 57 source and annotated `v0.5.5` tag are
+`d926561091634cd69fc9b7e79a4b76003fa4ee47`; exact Apple CI run
+`30454904736` and live App Store screenshot run `30454926117` passed.
+Build `57` is `VALID` and its direct App Review submission is
+`WAITING_FOR_REVIEW` after protected upload run `30456522039`. The iOS
+submission goes directly to App Review with manual
+release; it does not use TestFlight or a beta group. Public GitHub Release
+[`v0.5.5`](https://github.com/handshake-rs/hns-dane-browser-mobile/releases/tag/v0.5.5)
+retains the verified Android code 46 APK and iOS build 57 App Store IPA. These
+store and
+release-engineering facts remain product-specific evidence rather than
+ecosystem-wide or installed-device qualification.
 
 The Chromium repository's latest tag is `v0.5.5` at source
 `86b18497285753944ec1b9196ec05ee359c6db11`. Its public release contains 29
