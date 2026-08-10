@@ -41,13 +41,14 @@ expected_inventory_keys = {
     "schemaVersion",
     "snapshotDate",
     "repositories",
+    "localComponents",
     "relatedProducts",
     "mobileProductGates",
     "chromiumProductGates",
 }
 if set(inventory) != expected_inventory_keys:
     raise SystemExit("ecosystem release inventory top-level schema differs")
-if inventory.get("schemaVersion") != 2:
+if inventory.get("schemaVersion") != 3:
     raise SystemExit("unsupported ecosystem release inventory schema")
 snapshot_date = inventory.get("snapshotDate", "")
 if not re.fullmatch(r"\d{4}-\d{2}-\d{2}", snapshot_date):
@@ -86,6 +87,7 @@ for item in repositories:
     required_keys = {
         "repository",
         "mainCommit",
+        "qualificationCommit",
         "sourceVersion",
         "candidateTag",
         "candidateTagPresent",
@@ -114,6 +116,22 @@ for item in repositories:
         raise SystemExit(f"{repository}: candidate tag presence is inconsistent")
     if item.get("currentVersionPublished") is not False:
         raise SystemExit(f"{repository}: this snapshot must remain pre-publication")
+    recovery_eligible = item.get("recoveryCandidateProductionEligible")
+    if repository == "handshake-rs/hns-node-rs":
+        if recovery_eligible is not False:
+            raise SystemExit("node recovery candidate must remain non-production")
+    elif recovery_eligible is not None:
+        raise SystemExit(
+            f"{repository}: unexpected recoveryCandidateProductionEligible"
+        )
+    component_tag = item.get("latestComponentTag")
+    if repository == "handshake-rs/hns-dane-engine":
+        if component_tag != "hns-browser-observability-v0.1.1":
+            raise SystemExit("engine component tag differs from the reviewed state")
+        if component_tag not in profile:
+            raise SystemExit("engine component tag is absent from README")
+    elif component_tag is not None:
+        raise SystemExit(f"{repository}: unexpected latestComponentTag")
     repository_name = repository.rsplit("/", 1)[1]
     rows = [
         line
@@ -127,25 +145,76 @@ for item in repositories:
     if f"`{version}`" not in rows[0]:
         raise SystemExit(f"{repository}: source version is absent from its row")
 
-    evidence_keys = {"qualificationCommit", "evidenceCommit"}
+    qualification_commit = item["qualificationCommit"]
+    if qualification_commit is not None:
+        if not re.fullmatch(r"[0-9a-f]{40}", qualification_commit):
+            raise SystemExit(
+                f"{repository}: qualificationCommit is neither null nor a full Git SHA"
+            )
+        if qualification_commit != commit:
+            raise SystemExit(
+                f"{repository}: qualificationCommit must identify exact current main"
+            )
+        if qualification_commit not in profile:
+            raise SystemExit(
+                f"{repository}: qualificationCommit is absent from README evidence"
+            )
+
+    artifact_key = "artifactCommit"
+    installed_evidence_key = "installedEvidenceCommit"
     if repository in {
         "handshake-rs/hns-dane-browser-mobile",
         "handshake-rs/hns-dane-browser-extension",
     }:
-        missing_evidence_keys = evidence_keys - set(item)
-        if missing_evidence_keys:
+        missing_browser_keys = {artifact_key, installed_evidence_key} - set(item)
+        if missing_browser_keys:
             raise SystemExit(
                 f"{repository}: browser evidence keys are missing: "
-                f"{sorted(missing_evidence_keys)}"
+                f"{sorted(missing_browser_keys)}"
             )
-        for key in sorted(evidence_keys):
-            evidence_commit = item[key]
-            if not re.fullmatch(r"[0-9a-f]{40}", evidence_commit):
-                raise SystemExit(f"{repository}: {key} is not a full Git SHA")
-            if evidence_commit not in profile:
-                raise SystemExit(f"{repository}: {key} is absent from README evidence")
-    elif evidence_keys & set(item):
+        artifact_commit = item[artifact_key]
+        if not re.fullmatch(r"[0-9a-f]{40}", artifact_commit):
+            raise SystemExit(f"{repository}: artifactCommit is not a full Git SHA")
+        if artifact_commit not in profile:
+            raise SystemExit(f"{repository}: artifactCommit is absent from README")
+        evidence_commit = item[installed_evidence_key]
+        if evidence_commit is None:
+            raise SystemExit(
+                f"{repository}: this snapshot requires exact installed evidence"
+            )
+        if not re.fullmatch(r"[0-9a-f]{40}", evidence_commit):
+            raise SystemExit(
+                f"{repository}: installedEvidenceCommit is not a full Git SHA"
+            )
+        if evidence_commit != artifact_commit:
+            raise SystemExit(
+                f"{repository}: installed evidence must identify exact artifact source"
+            )
+        if evidence_commit not in profile:
+            raise SystemExit(
+                f"{repository}: installedEvidenceCommit is absent from README evidence"
+            )
+    elif {artifact_key, installed_evidence_key} & set(item):
         raise SystemExit(f"{repository}: unexpected browser evidence fields")
+
+local_components = inventory.get("localComponents")
+expected_local_components = [
+    {
+        "name": "freeDomains",
+        "sourceVersion": "0.1.0",
+        "sourceControl": "none",
+        "private": True,
+        "releaseCandidate": False,
+        "publishable": False,
+        "liveConfigurationReleaseArtifact": False,
+        "liveDatabaseReleaseArtifact": False,
+    }
+]
+if local_components != expected_local_components:
+    raise SystemExit("local private component boundary differs")
+for value in ("freeDomains", "0.1.0", "non-Git"):
+    if value not in profile:
+        raise SystemExit(f"local private component value is absent from README: {value}")
 
 related_products = inventory.get("relatedProducts")
 if not isinstance(related_products, list) or len(related_products) != 1:
@@ -196,18 +265,26 @@ if qualification_commit is not None and qualification_commit not in profile:
 mobile_gates = inventory.get("mobileProductGates", {})
 expected_mobile_gates = {
     "nativeWalletLifecycle": True,
-    "balance": False,
-    "receive": False,
-    "send": False,
+    "visibleFailClosedWalletReadProjection": True,
+    "scopedWalletReadCredential": False,
+    "indexedWalletReadBackend": False,
+    "walletReadDataAvailable": False,
+    "balanceAvailable": False,
+    "receiveTargetAvailable": False,
+    "transactionHistoryAvailable": False,
+    "trackedNamesAvailable": False,
+    "walletModuleStatusAvailable": False,
+    "sendValueControl": False,
     "nameManagement": False,
     "websiteProvider": False,
     "valueSettlement": False,
+    "hip76P2pDnsRelayRequester": True,
     "p2pMarketplace": False,
     "hnsaServiceRole": False,
     "hnsrServiceRole": False,
 }
 if mobile_gates != expected_mobile_gates:
-    raise SystemExit("mobile product gates differ from the reviewed schema-2 boundary")
+    raise SystemExit("mobile product gates differ from the reviewed schema-3 boundary")
 
 chromium_gates = inventory.get("chromiumProductGates", {})
 expected_chromium_gates = {
@@ -220,7 +297,7 @@ expected_chromium_gates = {
     "meshmineFeedVerified": False,
 }
 if chromium_gates != expected_chromium_gates:
-    raise SystemExit("Chromium product gates differ from the reviewed schema-2 boundary")
+    raise SystemExit("Chromium product gates differ from the reviewed schema-3 boundary")
 
 legacy_markers = (
     "504d3fed035feb8a637ca09c4e0816b6e1144622",

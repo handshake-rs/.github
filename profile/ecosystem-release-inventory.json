@@ -1,10 +1,11 @@
 {
-  "schemaVersion": 2,
+  "schemaVersion": 3,
   "snapshotDate": "2026-08-10",
   "repositories": [
     {
       "repository": "handshake-rs/hns-rs",
-      "mainCommit": "b24b66c382de53330ec21dd3137e056a2bea3e2d",
+      "mainCommit": "c76cd6f57e0601b86aad6b5f051ae8bbe2fab2e7",
+      "qualificationCommit": "c76cd6f57e0601b86aad6b5f051ae8bbe2fab2e7",
       "sourceVersion": "0.2.0",
       "candidateTag": "v0.2.0",
       "candidateTagPresent": false,
@@ -14,7 +15,8 @@
     },
     {
       "repository": "handshake-rs/hns-wallet-rs",
-      "mainCommit": "4e78bb2587bc448d3a65341c7628b2e62cae79cd",
+      "mainCommit": "6cd3e8ea1659dc64a89bedfb10d1296c83eb07a8",
+      "qualificationCommit": "6cd3e8ea1659dc64a89bedfb10d1296c83eb07a8",
       "sourceVersion": "0.1.0",
       "candidateTag": "v0.1.0",
       "candidateTagPresent": false,
@@ -24,16 +26,19 @@
     },
     {
       "repository": "handshake-rs/hns-node-rs",
-      "mainCommit": "9ed129f30c8cd8cd8a07c6872aa4ac40ece5d23b",
+      "mainCommit": "f2c94823e16fa5b877d1270cc366052b6fd7dbd9",
+      "qualificationCommit": "f2c94823e16fa5b877d1270cc366052b6fd7dbd9",
       "sourceVersion": "0.3.5",
       "candidateTag": "v0.3.5",
       "candidateTagPresent": false,
       "currentVersionPublished": false,
+      "recoveryCandidateProductionEligible": false,
       "latestGithubRelease": "v0.3.4"
     },
     {
       "repository": "handshake-rs/MeshMine",
-      "mainCommit": "ad0958e0234075470e5b03ba726e3c9dc9b7f865",
+      "mainCommit": "60eecd1c1ab60fc8df1802b7de3f8e89e67974ca",
+      "qualificationCommit": "60eecd1c1ab60fc8df1802b7de3f8e89e67974ca",
       "sourceVersion": "0.1.0",
       "candidateTag": null,
       "candidateTagPresent": null,
@@ -44,32 +49,36 @@
     },
     {
       "repository": "handshake-rs/hns-dane-engine",
-      "mainCommit": "2b23bd55d14d36fe60073606869d75b4796c54f7",
+      "mainCommit": "16d1de5f0667276400587970a36a307b8772a061",
+      "qualificationCommit": "16d1de5f0667276400587970a36a307b8772a061",
       "sourceVersion": "0.2.0",
       "candidateTag": "v0.2.0",
       "candidateTagPresent": false,
       "currentVersionPublished": false,
       "publishablePackageCount": 19,
-      "latestGithubRelease": "v0.1.0"
+      "latestGithubRelease": "v0.1.0",
+      "latestComponentTag": "hns-browser-observability-v0.1.1"
     },
     {
       "repository": "handshake-rs/hns-dane-browser-mobile",
-      "mainCommit": "fe2d8aa2805dd4d877a7c75ef4c3c3cccaf6603d",
-      "qualificationCommit": "ce9c09a40117142d3a26ff1196c2dec3f5e06139",
-      "evidenceCommit": "f21bee1c3afccd06604dc99fccb51528e2441055",
-      "sourceVersion": "0.5.8",
-      "androidVersionCode": 49,
-      "iosBuild": 58,
-      "candidateTag": "v0.5.8",
+      "mainCommit": "8eb6937b1e9d3153a2bffdc87a5e881dc96ed8aa",
+      "qualificationCommit": "8eb6937b1e9d3153a2bffdc87a5e881dc96ed8aa",
+      "artifactCommit": "893ba8271787f1ab7247fa78ed8787462b5542fc",
+      "installedEvidenceCommit": "893ba8271787f1ab7247fa78ed8787462b5542fc",
+      "sourceVersion": "0.5.9",
+      "androidVersionCode": 50,
+      "iosBuild": 59,
+      "candidateTag": "v0.5.9",
       "candidateTagPresent": false,
       "currentVersionPublished": false,
       "latestGithubRelease": "v0.5.7"
     },
     {
       "repository": "handshake-rs/hns-dane-browser-extension",
-      "mainCommit": "b7cbb4086db4c757b2b7bc2d1c14f5f7d07f467a",
-      "qualificationCommit": "5a7683e70162220c8bfbdae9e8a7d4c3c37acf02",
-      "evidenceCommit": "5a7683e70162220c8bfbdae9e8a7d4c3c37acf02",
+      "mainCommit": "82df11585d5e43c595adda41f083698884c344b4",
+      "qualificationCommit": "82df11585d5e43c595adda41f083698884c344b4",
+      "artifactCommit": "82df11585d5e43c595adda41f083698884c344b4",
+      "installedEvidenceCommit": "82df11585d5e43c595adda41f083698884c344b4",
       "sourceVersion": "0.5.6",
       "candidateTag": "v0.5.6",
       "candidateTagPresent": false,
@@ -78,7 +87,8 @@
     },
     {
       "repository": "handshake-rs/hns-dane-crawler",
-      "mainCommit": "43b78fb6a28f920415aed6145d232126f5fa57e5",
+      "mainCommit": "1a290efa394a2b28e958fb94d556719199bb00dd",
+      "qualificationCommit": "1a290efa394a2b28e958fb94d556719199bb00dd",
       "sourceVersion": "0.1.0",
       "distribution": "denuo-hns-topology",
       "candidateTag": "v0.1.0",
@@ -88,13 +98,26 @@
     },
     {
       "repository": "handshake-rs/hns-dane-bootstrap-generator",
-      "mainCommit": "30aa0791730ce54ff6a0b345f97afce7b232bdd5",
+      "mainCommit": "65cc8aa1335d7a0e0299c31a96e824a702914869",
+      "qualificationCommit": "65cc8aa1335d7a0e0299c31a96e824a702914869",
       "sourceVersion": "0.2.2",
       "candidateTag": "v0.2.2",
       "candidateTagPresent": false,
       "currentVersionPublished": false,
       "latestGithubRelease": null,
       "latestSourceTag": "v0.2.1"
+    }
+  ],
+  "localComponents": [
+    {
+      "name": "freeDomains",
+      "sourceVersion": "0.1.0",
+      "sourceControl": "none",
+      "private": true,
+      "releaseCandidate": false,
+      "publishable": false,
+      "liveConfigurationReleaseArtifact": false,
+      "liveDatabaseReleaseArtifact": false
     }
   ],
   "relatedProducts": [
@@ -111,12 +134,20 @@
   ],
   "mobileProductGates": {
     "nativeWalletLifecycle": true,
-    "balance": false,
-    "receive": false,
-    "send": false,
+    "visibleFailClosedWalletReadProjection": true,
+    "scopedWalletReadCredential": false,
+    "indexedWalletReadBackend": false,
+    "walletReadDataAvailable": false,
+    "balanceAvailable": false,
+    "receiveTargetAvailable": false,
+    "transactionHistoryAvailable": false,
+    "trackedNamesAvailable": false,
+    "walletModuleStatusAvailable": false,
+    "sendValueControl": false,
     "nameManagement": false,
     "websiteProvider": false,
     "valueSettlement": false,
+    "hip76P2pDnsRelayRequester": true,
     "p2pMarketplace": false,
     "hnsaServiceRole": false,
     "hnsrServiceRole": false
