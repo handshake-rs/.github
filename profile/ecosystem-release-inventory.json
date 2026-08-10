@@ -1,0 +1,117 @@
+{
+  "schemaVersion": 1,
+  "snapshotDate": "2026-08-10",
+  "repositories": [
+    {
+      "repository": "handshake-rs/hns-rs",
+      "mainCommit": "b24b66c382de53330ec21dd3137e056a2bea3e2d",
+      "sourceVersion": "0.2.0",
+      "candidateTag": "v0.2.0",
+      "candidateTagPresent": false,
+      "currentVersionPublished": false,
+      "publishablePackageCount": 17,
+      "latestGithubRelease": "v0.1.0"
+    },
+    {
+      "repository": "handshake-rs/hns-wallet-rs",
+      "mainCommit": "4e78bb2587bc448d3a65341c7628b2e62cae79cd",
+      "sourceVersion": "0.1.0",
+      "candidateTag": "v0.1.0",
+      "candidateTagPresent": false,
+      "currentVersionPublished": false,
+      "publishablePackageCount": 14,
+      "latestGithubRelease": null
+    },
+    {
+      "repository": "handshake-rs/hns-node-rs",
+      "mainCommit": "9ed129f30c8cd8cd8a07c6872aa4ac40ece5d23b",
+      "sourceVersion": "0.3.5",
+      "candidateTag": "v0.3.5",
+      "candidateTagPresent": false,
+      "currentVersionPublished": false,
+      "latestGithubRelease": "v0.3.4"
+    },
+    {
+      "repository": "handshake-rs/MeshMine",
+      "mainCommit": "ad0958e0234075470e5b03ba726e3c9dc9b7f865",
+      "sourceVersion": "0.1.0",
+      "candidateTag": null,
+      "candidateTagPresent": null,
+      "currentVersionPublished": false,
+      "workspacePackageCount": 27,
+      "publishablePackageCount": 0,
+      "latestGithubRelease": null
+    },
+    {
+      "repository": "handshake-rs/hns-dane-engine",
+      "mainCommit": "2b23bd55d14d36fe60073606869d75b4796c54f7",
+      "sourceVersion": "0.2.0",
+      "candidateTag": "v0.2.0",
+      "candidateTagPresent": false,
+      "currentVersionPublished": false,
+      "publishablePackageCount": 19,
+      "latestGithubRelease": "v0.1.0"
+    },
+    {
+      "repository": "handshake-rs/hns-dane-browser-mobile",
+      "mainCommit": "f21bee1c3afccd06604dc99fccb51528e2441055",
+      "sourceVersion": "0.5.8",
+      "androidVersionCode": 49,
+      "iosBuild": 58,
+      "candidateTag": "v0.5.8",
+      "candidateTagPresent": false,
+      "currentVersionPublished": false,
+      "latestGithubRelease": "v0.5.7"
+    },
+    {
+      "repository": "handshake-rs/hns-dane-browser-extension",
+      "mainCommit": "5a7683e70162220c8bfbdae9e8a7d4c3c37acf02",
+      "sourceVersion": "0.5.6",
+      "candidateTag": "v0.5.6",
+      "candidateTagPresent": false,
+      "currentVersionPublished": false,
+      "latestGithubRelease": "v0.5.5"
+    },
+    {
+      "repository": "handshake-rs/hns-dane-crawler",
+      "mainCommit": "43b78fb6a28f920415aed6145d232126f5fa57e5",
+      "sourceVersion": "0.1.0",
+      "distribution": "denuo-hns-topology",
+      "candidateTag": "v0.1.0",
+      "candidateTagPresent": false,
+      "currentVersionPublished": false,
+      "latestGithubRelease": null
+    },
+    {
+      "repository": "handshake-rs/hns-dane-bootstrap-generator",
+      "mainCommit": "30aa0791730ce54ff6a0b345f97afce7b232bdd5",
+      "sourceVersion": "0.2.2",
+      "candidateTag": "v0.2.2",
+      "candidateTagPresent": false,
+      "currentVersionPublished": false,
+      "latestGithubRelease": null,
+      "latestSourceTag": "v0.2.1"
+    }
+  ],
+  "mobileProductGates": {
+    "nativeWalletLifecycle": true,
+    "balance": false,
+    "receive": false,
+    "send": false,
+    "nameManagement": false,
+    "websiteProvider": false,
+    "valueSettlement": false,
+    "p2pMarketplace": false,
+    "hnsaServiceRole": false,
+    "hnsrServiceRole": false
+  },
+  "chromiumProductGates": {
+    "websiteProvider": false,
+    "walletAuthority": false,
+    "valueSettlement": false,
+    "p2pMarketplace": false,
+    "hnsaServiceRole": false,
+    "hnsrServiceRole": false,
+    "meshmineFeedVerified": false
+  }
+}
