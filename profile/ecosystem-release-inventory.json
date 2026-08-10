@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "snapshotDate": "2026-08-10",
   "repositories": [
     {
@@ -54,7 +54,9 @@
     },
     {
       "repository": "handshake-rs/hns-dane-browser-mobile",
-      "mainCommit": "f21bee1c3afccd06604dc99fccb51528e2441055",
+      "mainCommit": "fe2d8aa2805dd4d877a7c75ef4c3c3cccaf6603d",
+      "qualificationCommit": "ce9c09a40117142d3a26ff1196c2dec3f5e06139",
+      "evidenceCommit": "f21bee1c3afccd06604dc99fccb51528e2441055",
       "sourceVersion": "0.5.8",
       "androidVersionCode": 49,
       "iosBuild": 58,
@@ -65,7 +67,9 @@
     },
     {
       "repository": "handshake-rs/hns-dane-browser-extension",
-      "mainCommit": "5a7683e70162220c8bfbdae9e8a7d4c3c37acf02",
+      "mainCommit": "b7cbb4086db4c757b2b7bc2d1c14f5f7d07f467a",
+      "qualificationCommit": "5a7683e70162220c8bfbdae9e8a7d4c3c37acf02",
+      "evidenceCommit": "5a7683e70162220c8bfbdae9e8a7d4c3c37acf02",
       "sourceVersion": "0.5.6",
       "candidateTag": "v0.5.6",
       "candidateTagPresent": false,
@@ -91,6 +95,18 @@
       "currentVersionPublished": false,
       "latestGithubRelease": null,
       "latestSourceTag": "v0.2.1"
+    }
+  ],
+  "relatedProducts": [
+    {
+      "repository": "denuoweb/namehold-wallet",
+      "mainCommit": "60f10f91e6f856e4620bfd1b430dd1eb3a08a1a5",
+      "qualificationCommit": "60f10f91e6f856e4620bfd1b430dd1eb3a08a1a5",
+      "sourceVersion": "0.4.0",
+      "releaseAuthorityRepository": "DimazzzZ/namehold-wallet",
+      "latestPublicRelease": "v0.4.0",
+      "nextVersionSelected": false,
+      "mirrorReleaseAuthorized": false
     }
   ],
   "mobileProductGates": {

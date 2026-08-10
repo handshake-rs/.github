@@ -75,8 +75,8 @@ automation.
 | `hns-node-rs` | [`9ed129f`](https://github.com/handshake-rs/hns-node-rs/commit/9ed129f30c8cd8cd8a07c6872aa4ac40ece5d23b) | untagged `0.3.5` candidate | `v0.3.4` remains the latest GitHub prerelease |
 | `MeshMine` | [`ad0958e`](https://github.com/handshake-rs/MeshMine/commit/ad0958e0234075470e5b03ba726e3c9dc9b7f865) | 27 private workspace packages at existing `0.1.0`; release version not selected | no tag, GitHub Release, publication, or selected artifact contract |
 | `hns-dane-engine` | [`2b23bd5`](https://github.com/handshake-rs/hns-dane-engine/commit/2b23bd55d14d36fe60073606869d75b4796c54f7) | 19-crate `0.2.0` candidate | `v0.1.0` is public; `0.2.0` is not tagged or published |
-| `hns-dane-browser-mobile` | [`f21bee1`](https://github.com/handshake-rs/hns-dane-browser-mobile/commit/f21bee1c3afccd06604dc99fccb51528e2441055) | `0.5.8`, Android code 49, iOS build 58 | untagged and unshipped; `v0.5.7` remains the latest GitHub Release |
-| `hns-dane-browser-extension` | [`5a7683e`](https://github.com/handshake-rs/hns-dane-browser-extension/commit/5a7683e70162220c8bfbdae9e8a7d4c3c37acf02) | untagged `0.5.6` candidate | `v0.5.5` remains the latest GitHub Release |
+| `hns-dane-browser-mobile` | [`fe2d8aa`](https://github.com/handshake-rs/hns-dane-browser-mobile/commit/fe2d8aa2805dd4d877a7c75ef4c3c3cccaf6603d) | `0.5.8`, Android code 49, iOS build 58 | untagged and unshipped; `v0.5.7` remains the latest GitHub Release |
+| `hns-dane-browser-extension` | [`b7cbb40`](https://github.com/handshake-rs/hns-dane-browser-extension/commit/b7cbb4086db4c757b2b7bc2d1c14f5f7d07f467a) | untagged `0.5.6` candidate | `v0.5.5` remains the latest GitHub Release |
 | `hns-dane-crawler` | [`43b78fb`](https://github.com/handshake-rs/hns-dane-crawler/commit/43b78fb6a28f920415aed6145d232126f5fa57e5) | first `denuo-hns-topology` `0.1.0` wheel candidate | no tag, GitHub Release, or PyPI publication |
 | `hns-dane-bootstrap-generator` | [`30aa079`](https://github.com/handshake-rs/hns-dane-bootstrap-generator/commit/30aa0791730ce54ff6a0b345f97afce7b232bdd5) | private-package/application `0.2.2` candidate | untagged; `v0.2.1` remains the latest source tag and public StackScript baseline |
 
@@ -118,9 +118,29 @@ The product and utility source candidates also have exact-commit evidence:
   [`31406911750`](https://github.com/handshake-rs/MeshMine/actions/runs/31406911750)
   passed at `ad0958e`; source qualification does not close its hardware,
   public-WAN, independent-review, production-mode, or artifact-contract gates;
-- mobile CI
-  [`31402758394`](https://github.com/handshake-rs/hns-dane-browser-mobile/actions/runs/31402758394)
-  passed at `f21bee1`; its exact CI-produced Android debug APK, SHA-256
+- mobile remote main
+  [`fe2d8aa`](https://github.com/handshake-rs/hns-dane-browser-mobile/commit/fe2d8aa2805dd4d877a7c75ef4c3c3cccaf6603d)
+  is a documentation-only release-qualification reconciliation whose exact CI
+  [`31414261830`](https://github.com/handshake-rs/hns-dane-browser-mobile/actions/runs/31414261830),
+  Code Quality
+  [`31414260532`](https://github.com/handshake-rs/hns-dane-browser-mobile/actions/runs/31414260532),
+  and CodeQL
+  [`31414260484`](https://github.com/handshake-rs/hns-dane-browser-mobile/actions/runs/31414260484)
+  all passed. The mobile qualification checkout
+  [`ce9c09a`](https://github.com/handshake-rs/hns-dane-browser-mobile/commit/ce9c09a40117142d3a26ff1196c2dec3f5e06139)
+  passed the full manually dispatched Required CI
+  [`31411048376`](https://github.com/handshake-rs/hns-dane-browser-mobile/actions/runs/31411048376),
+  including policy, Rust, Android build/unit, Android instrumentation, and Apple
+  ABI/XCFramework/iOS-shell gates, plus the complete CodeQL matrix
+  [`31409839294`](https://github.com/handshake-rs/hns-dane-browser-mobile/actions/runs/31409839294).
+  Its automatic docs-scoped push CI also passed as
+  [`31409845513`](https://github.com/handshake-rs/hns-dane-browser-mobile/actions/runs/31409845513)
+  without substituting for the full gate.
+  The retained installed-device evidence remains application source
+  [`f21bee1`](https://github.com/handshake-rs/hns-dane-browser-mobile/commit/f21bee1c3afccd06604dc99fccb51528e2441055)
+  and Required CI
+  [`31402758394`](https://github.com/handshake-rs/hns-dane-browser-mobile/actions/runs/31402758394):
+  its exact CI-produced Android debug APK, SHA-256
   `e7dd8ee68f5167ea869fc985e1fef60a799e8cfc637a1a1b651a5f0f74b40508`,
   was installed fresh and inspected on a Pixel 9. Apple ABI, XCFramework, and
   iOS shell jobs passed in the same gate, but a signed/store build still
@@ -131,11 +151,17 @@ The product and utility source candidates also have exact-commit evidence:
   [`909dbd1`](https://github.com/Denuo-Web/DenuoWebSite/commit/909dbd1a713f322f0a8d4cff88e765c612e184f3);
   its candidate/current-binaries wording must be reconciled after `0.5.8`
   becomes public;
-- extension CI
-  [`31404782077`](https://github.com/handshake-rs/hns-dane-browser-extension/actions/runs/31404782077)
+- extension remote main
+  [`b7cbb40`](https://github.com/handshake-rs/hns-dane-browser-extension/commit/b7cbb4086db4c757b2b7bc2d1c14f5f7d07f467a)
+  is a documentation reconciliation whose exact CI
+  [`31412454676`](https://github.com/handshake-rs/hns-dane-browser-extension/actions/runs/31412454676)
   and CodeQL
-  [`31404781059`](https://github.com/handshake-rs/hns-dane-browser-extension/actions/runs/31404781059)
-  passed at `5a7683e`, producing the exact Linux arm64 qualification inputs.
+  [`31412453939`](https://github.com/handshake-rs/hns-dane-browser-extension/actions/runs/31412453939)
+  passed. The application/artifact qualification and installed-browser
+  inputs and evidence remain exact source
+  [`5a7683e`](https://github.com/handshake-rs/hns-dane-browser-extension/commit/5a7683e70162220c8bfbdae9e8a7d4c3c37acf02)
+  from CI
+  [`31404782077`](https://github.com/handshake-rs/hns-dane-browser-extension/actions/runs/31404782077).
   Bundle provenance SHA-256 is
   `bc73451efe1c9490d2da171683b0ea3c734da78a749defbd211edd3a15fd6bdd`;
   the native host SHA-256 is
@@ -147,9 +173,12 @@ The product and utility source candidates also have exact-commit evidence:
   Those exact inputs passed the available isolated-profile checks in Chromium
   `149.0.7827.196` arm64: current headers, ICANN WebPKI, restart/reconnect, and
   disabled capabilities under canonical ID
-  `idejjnoplngbhpnpjekblpalblbianio`. Two positive HNS-origin proof attempts
-  timed out and failed closed; therefore the required positive HNS/DANE portion
-  remains open. Clean teardown left the normal profile untouched. This exact
+  `idejjnoplngbhpnpjekblpalblbianio`. The attempted `welcome` hostname was
+  synthetic and had not passed the required current-proof, authoritative-DNS,
+  DNSSEC, TLSA, and certificate preflight. Its two proof timeouts demonstrate
+  fail-closed behavior; they are not a regression result for a qualified HNS
+  origin and do not satisfy the positive HNS/DANE gate. That gate remains
+  pending. Clean teardown left the normal profile untouched. This exact
   installed-browser evidence is neither complete candidate qualification nor
   store publication;
 - crawler CI
@@ -175,11 +204,20 @@ The product and utility source candidates also have exact-commit evidence:
 | Browser P2P marketplace | **Unavailable.** Canonical protocol and persisted workflow source is not a live discovery, order-book, transport, approval, funding, or settlement product. Neither browser exposes it. |
 | HNSA/HNSR browser services | **Unavailable.** Mobile exposes no controls; Chromium disables every role and labels its optional MeshMine feed unverified. Source-level protocol, node, engine, or MeshMine paths do not qualify a browser endpoint/rendezvous/provider service. |
 
-The independently maintained
-[`DenuoWeb/namehold-wallet`](https://github.com/denuoweb/namehold-wallet) desktop
-wallet is not the `hns-wallet-rs` mobile integration. Its hsd-backed value and
-name controls, release history, updater authority, and qualification boundary
-remain product-local; they do not make the mobile or Chromium gates above true.
+The independently maintained `denuoweb/namehold-wallet` mirror is at exact
+remote main
+[`60f10f9`](https://github.com/denuoweb/namehold-wallet/commit/60f10f91e6f856e4620bfd1b430dd1eb3a08a1a5)
+and remains version `0.4.0`. Exact CI
+[`31412326500`](https://github.com/denuoweb/namehold-wallet/actions/runs/31412326500)
+and Workflow Validation
+[`31412329124`](https://github.com/denuoweb/namehold-wallet/actions/runs/31412329124)
+passed at that source. It is a separate hsd-backed, value- and name-capable
+desktop wallet, not the `hns-wallet-rs` mobile integration, and it does not
+make the mobile or Chromium gates above true. Existing updater authority and public
+[`v0.4.0`](https://github.com/DimazzzZ/namehold-wallet/releases/tag/v0.4.0)
+remain at `DimazzzZ/namehold-wallet`. The mirror cannot select or release a
+next version until release-repository ownership, updater endpoint, signing-key
+custody, and continuity for existing installations are resolved together.
 
 ## Release order
 

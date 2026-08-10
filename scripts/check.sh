@@ -1,7 +1,7 @@
 #!/usr/bin/env sh
 set -eu
 
-repo_root=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)
+repo_root=$(CDPATH='' cd -- "$(dirname -- "$0")/.." && pwd)
 cd "$repo_root"
 
 sha256sum --check profile/assets/SHA256SUMS
@@ -41,12 +41,13 @@ expected_inventory_keys = {
     "schemaVersion",
     "snapshotDate",
     "repositories",
+    "relatedProducts",
     "mobileProductGates",
     "chromiumProductGates",
 }
 if set(inventory) != expected_inventory_keys:
     raise SystemExit("ecosystem release inventory top-level schema differs")
-if inventory.get("schemaVersion") != 1:
+if inventory.get("schemaVersion") != 2:
     raise SystemExit("unsupported ecosystem release inventory schema")
 snapshot_date = inventory.get("snapshotDate", "")
 if not re.fullmatch(r"\d{4}-\d{2}-\d{2}", snapshot_date):
@@ -126,6 +127,72 @@ for item in repositories:
     if f"`{version}`" not in rows[0]:
         raise SystemExit(f"{repository}: source version is absent from its row")
 
+    evidence_keys = {"qualificationCommit", "evidenceCommit"}
+    if repository in {
+        "handshake-rs/hns-dane-browser-mobile",
+        "handshake-rs/hns-dane-browser-extension",
+    }:
+        missing_evidence_keys = evidence_keys - set(item)
+        if missing_evidence_keys:
+            raise SystemExit(
+                f"{repository}: browser evidence keys are missing: "
+                f"{sorted(missing_evidence_keys)}"
+            )
+        for key in sorted(evidence_keys):
+            evidence_commit = item[key]
+            if not re.fullmatch(r"[0-9a-f]{40}", evidence_commit):
+                raise SystemExit(f"{repository}: {key} is not a full Git SHA")
+            if evidence_commit not in profile:
+                raise SystemExit(f"{repository}: {key} is absent from README evidence")
+    elif evidence_keys & set(item):
+        raise SystemExit(f"{repository}: unexpected browser evidence fields")
+
+related_products = inventory.get("relatedProducts")
+if not isinstance(related_products, list) or len(related_products) != 1:
+    raise SystemExit("release inventory must contain one related product boundary")
+namehold = related_products[0]
+expected_namehold_keys = {
+    "repository",
+    "mainCommit",
+    "qualificationCommit",
+    "sourceVersion",
+    "releaseAuthorityRepository",
+    "latestPublicRelease",
+    "nextVersionSelected",
+    "mirrorReleaseAuthorized",
+}
+if set(namehold) != expected_namehold_keys:
+    raise SystemExit("Namehold release inventory schema differs")
+if namehold["repository"] != "denuoweb/namehold-wallet":
+    raise SystemExit("Namehold mirror repository differs")
+if not re.fullmatch(r"[0-9a-f]{40}", namehold["mainCommit"]):
+    raise SystemExit("Namehold mainCommit is not a full Git SHA")
+qualification_commit = namehold["qualificationCommit"]
+if qualification_commit is not None and not re.fullmatch(
+    r"[0-9a-f]{40}", qualification_commit
+):
+    raise SystemExit("Namehold qualificationCommit is neither null nor a full Git SHA")
+if not re.fullmatch(r"\d+\.\d+\.\d+", namehold["sourceVersion"]):
+    raise SystemExit("Namehold sourceVersion is not semantic versioning")
+if namehold["releaseAuthorityRepository"] != "DimazzzZ/namehold-wallet":
+    raise SystemExit("Namehold updater release authority differs")
+if namehold["latestPublicRelease"] != f"v{namehold['sourceVersion']}":
+    raise SystemExit("Namehold public release and source version differ")
+if namehold["nextVersionSelected"] is not False:
+    raise SystemExit("Namehold next version must remain unselected")
+if namehold["mirrorReleaseAuthorized"] is not False:
+    raise SystemExit("Namehold mirror release must remain unauthorized")
+for value in (
+    namehold["mainCommit"],
+    namehold["sourceVersion"],
+    namehold["releaseAuthorityRepository"],
+    namehold["latestPublicRelease"],
+):
+    if value not in profile:
+        raise SystemExit(f"Namehold inventory value is absent from README: {value}")
+if qualification_commit is not None and qualification_commit not in profile:
+    raise SystemExit("Namehold qualification commit is absent from README")
+
 mobile_gates = inventory.get("mobileProductGates", {})
 expected_mobile_gates = {
     "nativeWalletLifecycle": True,
@@ -140,7 +207,7 @@ expected_mobile_gates = {
     "hnsrServiceRole": False,
 }
 if mobile_gates != expected_mobile_gates:
-    raise SystemExit("mobile product gates differ from the reviewed schema-1 boundary")
+    raise SystemExit("mobile product gates differ from the reviewed schema-2 boundary")
 
 chromium_gates = inventory.get("chromiumProductGates", {})
 expected_chromium_gates = {
@@ -153,7 +220,7 @@ expected_chromium_gates = {
     "meshmineFeedVerified": False,
 }
 if chromium_gates != expected_chromium_gates:
-    raise SystemExit("Chromium product gates differ from the reviewed schema-1 boundary")
+    raise SystemExit("Chromium product gates differ from the reviewed schema-2 boundary")
 
 legacy_markers = (
     "504d3fed035feb8a637ca09c4e0816b6e1144622",
