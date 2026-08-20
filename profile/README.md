@@ -84,35 +84,6 @@ installed-device/browser result.
 | `hns-dane-crawler` | [`1a290ef`](https://github.com/handshake-rs/hns-dane-crawler/commit/1a290efa394a2b28e958fb94d556719199bb00dd) | first `denuo-hns-topology` `0.1.0` wheel/sdist candidate | no tag, GitHub Release, or PyPI publication |
 | `hns-dane-bootstrap-generator` | [`65cc8aa`](https://github.com/handshake-rs/hns-dane-bootstrap-generator/commit/65cc8aa1335d7a0e0299c31a96e824a702914869) | private application `0.2.2` with a canonical, source-bound appliance candidate contract | `v0.2.1` remains the latest source tag; there is no GitHub Release |
 
-### Local-only private boundary
-
-The workspace also contains `freeDomains`, a non-Git, private Node package at
-`0.1.0` for coordinating giveaway-name auctions through HSD. It has no
-canonical remote, selected release candidate, tag, publication boundary, or
-artifact contract, so it is deliberately outside the repository table and
-release order. Its live `config.json`, SQLite database, and SQLite WAL/SHM
-sidecars are operator state—not source or release artifacts—and no path,
-credential location, wallet identifier, database content, or hash from them is
-recorded here.
-
-Before `freeDomains` can enter source control or release preparation, its setup
-documentation must replace the storage-device, specific-wallet/port, and
-creation-time sync narrative with portable example-based instructions. The
-current ignore rules exclude the database files but not the live `config.json`;
-the directory therefore must not be archived or published as-is. Only
-sanitized source, package metadata, documentation, tests, word-bank data, and
-`config.example.json` can be considered for a future source candidate. Its
-current restart behavior is also restart-aware rather than fully restart-safe
-because a process interruption between broadcast and durable `sent` recording
-can require operator reconciliation. The configured network is not yet enforced
-against the contacted node as a live-action admission check, which is another
-release blocker.
-
-These versions remain valid candidates while unpublished corrective source and
-documentation work is absorbed. Any changed source must receive new
-exact-commit qualification and artifact identity; evidence never transfers
-automatically from an ancestor.
-
 ### Exact qualification evidence
 
 Package-cohort evidence is:
