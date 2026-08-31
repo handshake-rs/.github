@@ -20,7 +20,7 @@ package.
 
 | Repository | Responsibility |
 | --- | --- |
-| [`hns-rs`](https://github.com/handshake-rs/hns-rs) | Runtime-independent Handshake protocol primitives, including consensus encodings, transactions, covenants, proofs, swaps, the experimental Denuo registry, HNSA objects, and HNSR state machines. It defines protocol boundaries; it does not operate a wallet, node, relay, or marketplace service. |
+| [`hns-rs`](https://github.com/handshake-rs/hns-rs) | Runtime-independent Handshake protocol primitives, including consensus encodings, transactions, covenants, proofs, swaps, the experimental Shakescape V1 registry, HNSA objects, and HNSR state machines. It defines protocol boundaries; it does not operate a wallet, node, relay, or marketplace service. |
 | [`hns-node-rs`](https://github.com/handshake-rs/hns-node-rs) | Standalone `hsrd` node, chain state, P2P synchronization, mempool, mining templates, RPC, resolver sidecar, and release-gated wallet indexes. Mainnet mining still requires the explicit synchronized canary; the node is not a wallet or market UI. |
 | [`hns-wallet-rs`](https://github.com/handshake-rs/hns-wallet-rs) | Independent encrypted wallet, provider, market-state, Shakedex, Bitcoin, Ethereum, host, FFI, and mobile-controller source boundary. The current mobile candidate wires the native HNS lifecycle and a strict non-value read projection; provider, value, name-action, settlement, and marketplace product gates remain false. |
 | [`MeshMine`](https://github.com/handshake-rs/MeshMine) | Private `0.1.0` mining-overlay workspace consuming exact external node and protocol revisions. Its draft HNSA/HNSR `pool-stats` path is specialized, unqualified, and not a wallet, exchange, order book, or P2P marketplace. |
