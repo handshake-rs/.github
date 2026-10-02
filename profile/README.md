@@ -10,9 +10,9 @@
 
 `handshake-rs` is an independent, community-led collection of Rust libraries,
 services, and applications for Handshake. Each product has its own repository,
-version history, qualification gates, license, and release boundary. The
+qualification gates, license, and release boundary. The
 [`ecosystem`](https://github.com/handshake-rs/ecosystem) repository coordinates
-cross-project architecture and evidence; it is not a monorepo or umbrella
+cross-project architecture and integration; it is not a monorepo or umbrella
 package.
 
 ## Projects
@@ -28,7 +28,7 @@ package.
 | [`MeshMine`](https://github.com/handshake-rs/MeshMine) | Private mining-overlay workspace consuming the node and protocol layers. Its `pool-stats` work is specialized and does not make it a wallet, exchange, order book, or general marketplace. |
 | [`hns-dane-crawler`](https://github.com/handshake-rs/hns-dane-crawler) | Observational HSD-derived topology, stored DNS evidence, DANE-readiness queues, reports, and optional directory output. Observations are not browser trust authority. |
 | [`hns-dane-bootstrap-generator`](https://github.com/handshake-rs/hns-dane-bootstrap-generator) | Operator tooling for HNS/ICANN delegation, DNSSEC/DS, authoritative DoH, TLSA, and appliance configuration. Generated guidance is not live validation or transaction authority. |
-| [`ecosystem`](https://github.com/handshake-rs/ecosystem) | Source audits, compatibility records, qualification matrices, migration notes, and historical release evidence across the separate repositories. |
+| [`ecosystem`](https://github.com/handshake-rs/ecosystem) | Current architecture, integration requirements, and qualification guidance across the separate repositories. |
 
 ## How the pieces fit
 
@@ -42,7 +42,7 @@ hns-node-rs ── typed chain/RPC adapter ──> hns-wallet-rs
 
 hns-dane-crawler ── observed gap ──> hns-dane-bootstrap-generator
 
-ecosystem ── audits compatibility, qualification, and release evidence
+ecosystem ── coordinates architecture, integration, and qualification
 ```
 
 Authority follows those arrows deliberately. Protocol types do not activate a
@@ -51,35 +51,10 @@ crawler observation or generated record does not become browser trust
 evidence. Both browser products resolve through HNS and ICANN and validate the
 selected DNSSEC, TLSA, and DANE evidence locally.
 
-## Current source and release inventory
-
-Snapshot: **2026-09-02**. `Code source` identifies the last reviewed
-code-bearing head. `Docs audit` identifies the repository head after this
-cross-project documentation reconciliation. A tag or package publication is
-reported only where the repository retains that evidence. The same data is
-available in
-[`ecosystem-release-inventory.json`](./ecosystem-release-inventory.json).
-
-| Repository | Code source | Docs audit | Current version | Release state |
-| --- | --- | --- | --- | --- |
-| `hns-rs` | [`73611a0`](https://github.com/handshake-rs/hns-rs/commit/73611a0d83778e157b35f28ca2197d068e83fc61) (`73611a0d83778e157b35f28ca2197d068e83fc61`) | `2408c1e2aada1e47f7b89bbd1dc4954cf133ea77` | `0.4.1` | The 17-crate cohort and `v0.4.1` are published. |
-| `hns-wallet-rs` | [`747d550`](https://github.com/handshake-rs/hns-wallet-rs/commit/747d550736f10a6b186f0d042b1a53c8bf7a5fba) (`747d550736f10a6b186f0d042b1a53c8bf7a5fba`) | `268830db27d0dbaa90580b456903248f053c7a21` | `0.2.1` | The 14-crate cohort and `v0.2.1` are published. |
-| `hns-node-rs` | [`c99dffa`](https://github.com/handshake-rs/hns-node-rs/commit/c99dffa9186066ea92aa96ea836fa2d51c2790e1) (`c99dffa9186066ea92aa96ea836fa2d51c2790e1`) | `5c0c6c5a060562c282f9e2adf921f25f440c3856` | `0.3.5` | `0.3.5` remains untagged; `v0.3.4` is the latest source tag. |
-| `MeshMine` | [`30be371`](https://github.com/handshake-rs/MeshMine/commit/30be371bc6643a358b1ee8c2306378ef4543c4a8) (`30be371bc6643a358b1ee8c2306378ef4543c4a8`) | `30be371bc6643a358b1ee8c2306378ef4543c4a8` | `0.1.0` | Private, non-publishable workspace with no release tag. |
-| `hns-dane-engine` | [`87d2346`](https://github.com/handshake-rs/hns-dane-engine/commit/87d2346c13ade4987801e0f1367bd604fd77c9f0) (`87d2346c13ade4987801e0f1367bd604fd77c9f0`) | `ac07911c5f5f558722c4c4f13a97099597049edc` | `0.2.2` | Mixed exact published component cohort across `0.2.x` and `0.3.0`; root tag `v0.2.2`. |
-| `hns-dane-browser-mobile` | [`7c1e952`](https://github.com/handshake-rs/hns-dane-browser-mobile/commit/7c1e9521fbd6df3c1a29437c6b08e25e13c37e1e) (`7c1e9521fbd6df3c1a29437c6b08e25e13c37e1e`) | `e79aa66ab1e760b90cb1b39b1988947430e6f204` | `1.0.4` | Android code 56 is committed to the Play production track; iOS build 65 is valid and waiting for review. Latest source tag is `v1.0.2`. |
-| `hns-dane-browser-extension` | [`2b6bf2f`](https://github.com/handshake-rs/hns-dane-browser-extension/commit/2b6bf2faf87f7bd14e07db3f21a13423b7d75f39) (`2b6bf2faf87f7bd14e07db3f21a13423b7d75f39`) | `9a73d4f590698b098b70e77689d6e956ce94e509` | `1.0.0` | Extension/native Setup source is `1.0.0`; `v0.5.9` remains the latest source tag. |
-| `hns-dane-crawler` | [`1a290ef`](https://github.com/handshake-rs/hns-dane-crawler/commit/1a290efa394a2b28e958fb94d556719199bb00dd) (`1a290efa394a2b28e958fb94d556719199bb00dd`) | `1a290efa394a2b28e958fb94d556719199bb00dd` | `0.1.0` | Untagged `denuo-hns-topology` package candidate. |
-| `hns-dane-bootstrap-generator` | [`65cc8aa`](https://github.com/handshake-rs/hns-dane-bootstrap-generator/commit/65cc8aa1335d7a0e0299c31a96e824a702914869) (`65cc8aa1335d7a0e0299c31a96e824a702914869`) | `65cc8aa1335d7a0e0299c31a96e824a702914869` | `0.2.2` | Private application; `v0.2.1` remains the latest source tag. |
-
-These are source and distribution coordinates, not a claim that the ecosystem
-is qualified as one product. Repository-local release documents remain the
-authority for artifacts, CI runs, installed-device evidence, and open gates.
-
 ## Browser product boundaries
 
-Shakescape mobile `1.0.4` includes the published `hns-rs 0.4.1` and
-`hns-wallet-rs 0.2.1` closures. Its native direct-wallet path supports local
+Shakescape mobile integrates the protocol, wallet, and browser-engine packages
+pinned by its own manifests. Its native direct-wallet path supports local
 wallet lifecycle, synchronized balance and history, distinct receive targets,
 send review and broadcast, tracked names, transfer/finalization, and closed
 Shakedex offer exchange. Explicit IP-literal Shakescape V1 pairing and the
@@ -105,12 +80,10 @@ authority from relaying them.
 
 ## Related product boundary
 
-The separately maintained `denuoweb/namehold-wallet` mirror remains at
-[`60f10f9`](https://github.com/denuoweb/namehold-wallet/commit/60f10f91e6f856e4620bfd1b430dd1eb3a08a1a5)
-(`60f10f91e6f856e4620bfd1b430dd1eb3a08a1a5`), version `0.4.0`. It is an
-hsd-backed desktop wallet, not the `hns-wallet-rs` mobile stack. Existing
-updater and public `v0.4.0` release authority remains with
-`DimazzzZ/namehold-wallet`.
+[`denuoweb/namehold-wallet`](https://github.com/denuoweb/namehold-wallet) is an
+hsd-backed desktop wallet with its own packaging and updater configuration.
+It is independent of the `hns-wallet-rs` mobile stack. Consult its release
+procedure for the configured signing and distribution authority.
 
 ## Source governance and maturity
 
@@ -123,12 +96,9 @@ source ownership. Artifacts must identify their exact source commit or tag.
 The ecosystem is under active construction and is **not release-ready as a
 whole**. A passing primitive, crate, or portable build does not imply
 installed-browser, wallet-value, marketplace, signed-device, mainnet, or
-production qualification. Consult the ecosystem
-[`qualification matrix`](https://github.com/handshake-rs/ecosystem/blob/main/QUALIFICATION_MATRIX.md),
-[`remaining gaps`](https://github.com/handshake-rs/ecosystem/blob/main/REMAINING_GAPS.md),
-and
-[`integration state`](https://github.com/handshake-rs/ecosystem/blob/main/INTEGRATION_STATE.md)
-for the current cross-project view.
+production qualification. Consult each product repository's current manifests
+and release procedure for package versions, supported capabilities, and
+qualification requirements.
 
 License terms differ by repository. Public source availability alone does not
 grant additional rights; consult each repository's license and third-party
